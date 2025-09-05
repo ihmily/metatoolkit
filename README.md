@@ -169,6 +169,83 @@ metakit read-audio --input audio.mp3
 - OGG (.ogg)
 - AAC (.aac)
 
+## Related Tools
+
+### Viewing and Verifying Metadata
+
+#### ExifTool
+
+[ExifTool](https://exiftool.org/) is a powerful command-line tool for reading, writing, and editing metadata in various file formats. It's particularly useful for viewing and verifying metadata in images.
+
+```bash
+# View all metadata in an image
+exiftool image.jpg
+
+# View specific metadata fields
+exiftool -EXIF:Make -EXIF:Model image.jpg
+
+# View metadata in a video
+exiftool video.mp4
+```
+
+#### FFprobe
+
+FFprobe is part of the FFmpeg suite and is excellent for analyzing audio and video files.
+
+```bash
+# View video metadata
+ffprobe -v quiet -print_format json -show_format -show_streams video.mp4
+
+# View audio metadata
+ffprobe -v quiet -print_format json -show_format audio.mp3
+
+# View basic information
+ffprobe -v quiet -show_entries format=duration,size,bit_rate input.mp4
+```
+
+#### MediaInfo
+
+MediaInfo is another excellent tool for viewing detailed metadata information.
+
+```bash
+# View all metadata
+mediainfo file.mp4
+
+# View in XML format
+mediainfo --Output=XML file.mp4
+```
+
+### Installation
+
+```bash
+# Install ExifTool (Windows)
+# Download from https://exiftool.org/
+
+# Install ExifTool (macOS)
+brew install exiftool
+
+# Install ExifTool (Ubuntu/Debian)
+sudo apt-get install libimage-exiftool-perl
+
+# Install FFmpeg/FFprobe (Windows)
+# Download from https://ffmpeg.org/download.html
+
+# Install FFmpeg/FFprobe (macOS)
+brew install ffmpeg
+
+# Install FFmpeg/FFprobe (Ubuntu/Debian)
+sudo apt-get install ffmpeg
+
+# Install MediaInfo (Windows)
+# Download from https://mediaarea.net/en/MediaInfo
+
+# Install MediaInfo (macOS)
+brew install mediainfo
+
+# Install MediaInfo (Ubuntu/Debian)
+sudo apt-get install mediainfo
+```
+
 ## Examples
 
 Check the `examples/basic_usage.py` file for more usage examples.
