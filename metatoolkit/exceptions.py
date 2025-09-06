@@ -2,16 +2,16 @@
 # -*- coding: utf-8 -*-
 
 """
-metakit exception classes
+metatoolkit exception classes
 """
 
 
-class MetakitError(Exception):
-    """Base exception class for metakit library"""
+class MetaToolkitError(Exception):
+    """Base exception class for metatoolkit library"""
     pass
 
 
-class UnsupportedFormatError(MetakitError):
+class UnsupportedFormatError(MetaToolkitError):
     """Unsupported format exception"""
 
     def __init__(self, format_name=None):
@@ -23,16 +23,16 @@ class UnsupportedFormatError(MetakitError):
         self.format_name = format_name
 
 
-class MetadataReadError(MetakitError):
+class MetadataReadError(MetaToolkitError):
     """Metadata read exception"""
     pass
 
 
-class MetadataWriteError(MetakitError):
+class MetadataWriteError(MetaToolkitError):
     """Metadata write exception"""
     pass
 
 
-class InvalidMetadataError(MetakitError):
+class InvalidMetadataError(MetaToolkitError):
     """Invalid metadata exception"""
     pass

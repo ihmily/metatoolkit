@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-metakit video metadata processing module
+metatoolkit audio metadata processing module
 """
 
 import os
@@ -21,9 +21,10 @@ from .exceptions import (
 logger = logging.getLogger(__name__)
 
 
-class VideoMetadataManager(BaseMetadataManager):
-    # Supported video formats
-    SUPPORTED_FORMATS = ('.mp4', '.mov', '.mkv', '.avi')
+class AudioMetadataManager(BaseMetadataManager):
+
+    # Supported audio formats
+    SUPPORTED_FORMATS = ('.mp3', '.flac', '.wav', '.ogg', '.m4a', '.aac')
 
     @staticmethod
     def _check_ffmpeg() -> bool:
@@ -53,41 +54,39 @@ class VideoMetadataManager(BaseMetadataManager):
         except (subprocess.SubprocessError, FileNotFoundError):
             return False
 
-    def add_metadata(self, video_path: str, output_path: Optional[str] = None) -> str:
+    def add_metadata(self, audio_path: str, output_path: Optional[str] = None) -> str:
         """
-        Add metadata to video
+        Add metadata to audio
         
         Args:
-            video_path (str): Input video path
-            output_path (str, optional): Output video path, auto-generated if None
+            audio_path (str): Input audio path
+            output_path (str, optional): Output audio path, auto-generated if None
             
         Returns:
-            str: Output video path
+            str: Output audio path
             
         Raises:
-            UnsupportedFormatError: If video format is not supported
+            UnsupportedFormatError: If audio format is not supported
             MetadataWriteError: If metadata writing fails
         """
         if not self._check_ffmpeg():
             raise MetadataWriteError("ffmpeg is not installed, please install ffmpeg first")
 
-        if not self.validate_file_exists(video_path):
-            raise FileNotFoundError(f"Video file does not exist: {video_path}")
+        if not self.validate_file_exists(audio_path):
+            raise FileNotFoundError(f"Audio file does not exist: {audio_path}")
 
-        _, ext = os.path.splitext(video_path)
+        _, ext = os.path.splitext(audio_path)
         if ext.lower() not in self.SUPPORTED_FORMATS:
-            raise UnsupportedFormatError(f"Unsupported video format: {ext}")
+            raise UnsupportedFormatError(f"Unsupported audio format: {ext}")
 
         if output_path is None:
-            output_path = self.generate_output_path(video_path)
+            output_path = self.generate_output_path(audio_path)
 
         try:
             cmd = [
                 'ffmpeg',
-                '-i', video_path,
-                '-c:v', 'copy',
-                '-c:a', 'copy',
-                '-movflags', 'use_metadata_tags',
+                '-i', audio_path,
+                '-c', 'copy',
             ]
 
             for key, value in self.metadata.items():
@@ -107,25 +106,25 @@ class VideoMetadataManager(BaseMetadataManager):
 
             _ = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8', check=True)
 
-            logger.info(f"Added metadata to video, saved to: {output_path}")
+            logger.info(f"Added metadata to audio, saved to: {output_path}")
             return output_path
 
         except subprocess.CalledProcessError as e:
-            error_msg = f"Failed to write video metadata: {e.stderr}"
+            error_msg = f"Failed to write audio metadata: {e.stderr}"
             logger.error(error_msg)
             raise MetadataWriteError(error_msg)
 
         except Exception as e:
-            error_msg = f"Error writing video metadata: {e}"
+            error_msg = f"Error writing audio metadata: {e}"
             logger.error(error_msg)
             raise MetadataWriteError(error_msg)
 
-    def read_metadata(self, video_path: str, metadata_key: Optional[str] = None) -> Optional[Dict[str, Any]]:
+    def read_metadata(self, audio_path: str, metadata_key: Optional[str] = None) -> Optional[Dict[str, Any]]:
         """
-        Read video metadata
+        Read audio metadata
         
         Args:
-            video_path (str): Video path
+            audio_path (str): Audio path
             metadata_key (str, optional): Metadata key name, returns all metadata if None, defaults to None
             
         Returns:
@@ -137,8 +136,8 @@ class VideoMetadataManager(BaseMetadataManager):
         if not self._check_ffprobe():
             raise MetadataReadError("ffprobe is not installed, please install ffmpeg first")
 
-        if not self.validate_file_exists(video_path):
-            raise FileNotFoundError(f"Video file does not exist: {video_path}")
+        if not self.validate_file_exists(audio_path):
+            raise FileNotFoundError(f"Audio file does not exist: {audio_path}")
 
         try:
             cmd = [
@@ -146,7 +145,7 @@ class VideoMetadataManager(BaseMetadataManager):
                 '-v', 'quiet',
                 '-print_format', 'json',
                 '-show_format',
-                video_path
+                audio_path
             ]
 
             result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8', check=True)
@@ -159,11 +158,12 @@ class VideoMetadataManager(BaseMetadataManager):
                 if metadata_key is not None and metadata_key in tags:
                     try:
                         metadata_obj = json.loads(tags[metadata_key])
-                        logger.info(f"Found video metadata: {metadata_key}")
+                        logger.info(f"Found audio metadata: {metadata_key}")
                         return metadata_obj
                     except json.JSONDecodeError:
-                        logger.info(f"Found video metadata (non-JSON format): {metadata_key}")
+                        logger.info(f"Found audio metadata (non-JSON format): {metadata_key}")
                         return {metadata_key: tags[metadata_key]}
+
                 elif metadata_key is None:
                     result_tags = {}
                     for key, value in tags.items():
@@ -176,31 +176,31 @@ class VideoMetadataManager(BaseMetadataManager):
                             result_tags[key] = value
 
                     if result_tags:
-                        logger.info("Found all video metadata tags")
+                        logger.info("Found all audio metadata tags")
                         return result_tags
 
             if metadata_key is not None:
-                logger.info(f"Video metadata not found: {metadata_key}")
+                logger.info(f"Audio metadata not found: {metadata_key}")
             else:
-                logger.info("No video metadata found")
+                logger.info("No audio metadata found")
             return None
 
         except subprocess.CalledProcessError as e:
-            error_msg = f"Failed to read video metadata: {e.stderr}"
+            error_msg = f"Failed to read audio metadata: {e.stderr}"
             logger.error(error_msg)
             raise MetadataReadError(error_msg)
 
         except Exception as e:
-            error_msg = f"Error reading video metadata: {e}"
+            error_msg = f"Error reading audio metadata: {e}"
             logger.error(error_msg)
             raise MetadataReadError(error_msg)
 
-    def get_all_metadata(self, video_path: str) -> Dict[str, Any]:
+    def get_all_metadata(self, audio_path: str) -> Dict[str, Any]:
         """
-        Get all metadata of the video
+        Get all metadata of the audio
         
         Args:
-            video_path (str): Video path
+            audio_path (str): Audio path
             
         Returns:
             dict: All metadata dictionary
@@ -211,8 +211,8 @@ class VideoMetadataManager(BaseMetadataManager):
         if not self._check_ffprobe():
             raise MetadataReadError("ffprobe is not installed, please install ffmpeg first")
 
-        if not self.validate_file_exists(video_path):
-            raise FileNotFoundError(f"Video file does not exist: {video_path}")
+        if not self.validate_file_exists(audio_path):
+            raise FileNotFoundError(f"Audio file does not exist: {audio_path}")
 
         try:
             cmd = [
@@ -221,7 +221,7 @@ class VideoMetadataManager(BaseMetadataManager):
                 '-print_format', 'json',
                 '-show_format',
                 '-show_streams',
-                video_path
+                audio_path
             ]
 
             result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8', check=True)
@@ -255,31 +255,31 @@ class VideoMetadataManager(BaseMetadataManager):
                             except json.JSONDecodeError:
                                 pass
 
-            logger.info(f"Retrieved all video metadata")
+            logger.info(f"Retrieved all audio metadata")
             return all_metadata
 
         except subprocess.CalledProcessError as e:
-            error_msg = f"Failed to read video metadata: {e.stderr}"
+            error_msg = f"Failed to read audio metadata: {e.stderr}"
             logger.error(error_msg)
             raise MetadataReadError(error_msg)
 
         except Exception as e:
-            error_msg = f"Error reading video metadata: {e}"
+            error_msg = f"Error reading audio metadata: {e}"
             logger.error(error_msg)
             raise MetadataReadError(error_msg)
 
 
-def add_video_metadata(video_path: str, output_path: Optional[str] = None,
+def add_audio_metadata(audio_path: str, output_path: Optional[str] = None,
                        custom_metadata: Optional[Dict[str, Any]] = None) -> str:
-    manager = VideoMetadataManager(custom_metadata)
-    return manager.add_metadata(video_path, output_path)
+    manager = AudioMetadataManager(custom_metadata)
+    return manager.add_metadata(audio_path, output_path)
 
 
-def read_video_metadata(video_path: str, metadata_key: Optional[str] = None) -> Optional[Dict[str, Any]]:
-    manager = VideoMetadataManager()
-    return manager.read_metadata(video_path, metadata_key)
+def read_audio_metadata(audio_path: str, metadata_key: Optional[str] = None) -> Optional[Dict[str, Any]]:
+    manager = AudioMetadataManager()
+    return manager.read_metadata(audio_path, metadata_key)
 
 
-def get_all_video_metadata(video_path: str) -> Dict[str, Any]:
-    manager = VideoMetadataManager()
-    return manager.get_all_metadata(video_path)
+def get_all_audio_metadata(audio_path: str) -> Dict[str, Any]:
+    manager = AudioMetadataManager()
+    return manager.get_all_metadata(audio_path)

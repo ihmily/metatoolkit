@@ -1,4 +1,4 @@
-# MetaKit
+# MetaToolkit
 
 A powerful Python library for processing metadata of images, videos, and audio files. Supports adding, reading, and managing metadata information for various media files.
 
@@ -16,14 +16,14 @@ A powerful Python library for processing metadata of images, videos, and audio f
 ### Install from PyPI
 
 ```bash
-pip install metakit
+pip install metatoolkit
 ```
 
 ### Install from Source
 
 ```bash
-git clone https://github.com/ihmily/metakit.git
-cd metakit
+git clone https://github.com/ihmily/metatoolkit.git
+cd metatoolkit
 pip install -e .
 ```
 
@@ -38,7 +38,7 @@ pip install -e .
 ### Image Metadata Processing
 
 ```python
-import metakit
+import metatoolkit
 from datetime import datetime
 
 # Add custom metadata to image
@@ -46,42 +46,42 @@ custom_metadata = {
     "model": "stable-diffusion-v1.5",
     "prompt": "A beautiful landscape",
     "timestamp": datetime.now().isoformat(),
-    "creator": "MetaKit"
+    "creator": "MetaToolkit"
 }
 
 # Add metadata
-output_path = metakit.add_image_metadata("input.jpg", custom_metadata=custom_metadata)
+output_path = metatoolkit.add_image_metadata("input.jpg", custom_metadata=custom_metadata)
 
 # Read metadata
-metadata = metakit.read_image_metadata(output_path)
+metadata = metatoolkit.read_image_metadata(output_path)
 print(metadata)
 ```
 
 ### Video Metadata Processing
 
 ```python
-import metakit
+import metatoolkit
 
 # Add video metadata
 video_metadata = {
     "title": "My Video",
     "description": "This is a test video",
-    "author": "MetaKit User",
+    "author": "MetaToolkit User",
     "creation_date": "2024-01-01"
 }
 
 # Add metadata
-metakit.add_video_metadata("input.mp4", custom_metadata=video_metadata)
+metatoolkit.add_video_metadata("input.mp4", custom_metadata=video_metadata)
 
 # Read metadata
-metadata = metakit.read_video_metadata("input.mp4")
+metadata = metatoolkit.read_video_metadata("input.mp4")
 print(metadata)
 ```
 
 ### Audio Metadata Processing
 
 ```python
-import metakit
+import metatoolkit
 
 # Add audio metadata
 audio_metadata = {
@@ -92,38 +92,38 @@ audio_metadata = {
 }
 
 # Add metadata
-metakit.add_audio_metadata("input.mp3", custom_metadata=audio_metadata)
+metatoolkit.add_audio_metadata("input.mp3", custom_metadata=audio_metadata)
 
 # Read metadata
-metadata = metakit.read_audio_metadata("input.mp3")
+metadata = metatoolkit.read_audio_metadata("input.mp3")
 print(metadata)
 ```
 
 ## Command Line Tool
 
-MetaKit provides a convenient command-line tool that can be used directly in the terminal:
+MetaToolkit provides a convenient command-line tool that can be used directly in the terminal:
 
 ```bash
 # Show help
-metakit --help
+metatoolkit --help
 
 # Add image metadata
-metakit add-image --input image.jpg --output image_with_metadata.jpg --metadata '{"title":"My Image","author":"User"}'
+metatoolkit add-image --input image.jpg --output image_with_metadata.jpg --metadata '{"title":"My Image","author":"User"}'
 
 # Read image metadata
-metakit read-image --input image.jpg
+metatoolkit read-image --input image.jpg
 
 # Add video metadata
-metakit add-video --input video.mp4 --metadata '{"title":"My Video","description":"Video description"}'
+metatoolkit add-video --input video.mp4 --metadata '{"title":"My Video","description":"Video description"}'
 
 # Read video metadata
-metakit read-video --input video.mp4
+metatoolkit read-video --input video.mp4
 
 # Add audio metadata
-metakit add-audio --input audio.mp3 --metadata '{"title":"My Music","artist":"Artist"}'
+metatoolkit add-audio --input audio.mp3 --metadata '{"title":"My Music","artist":"Artist"}'
 
 # Read audio metadata
-metakit read-audio --input audio.mp3
+metatoolkit read-audio --input audio.mp3
 ```
 
 ## API Reference
@@ -260,8 +260,8 @@ See [CHANGELOG.md](CHANGELOG.md) for version update history.
 
 ## Contact
 
-- Project Homepage: https://github.com/ihmily/metakit
-- Issue Tracker: https://github.com/ihmily/metakit/issues
+- Project Homepage: https://github.com/ihmily/metatoolkit
+- Issue Tracker: https://github.com/ihmily/metatoolkit/issues
 
 ## Acknowledgments
 

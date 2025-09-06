@@ -5,21 +5,21 @@ import os
 import re
 from setuptools import setup, find_packages
 
-with open(os.path.join('metakit', '__init__.py'), 'r', encoding='utf-8') as f:
+with open(os.path.join('metatoolkit', '__init__.py'), 'r', encoding='utf-8') as f:
     version = re.search(r"__version__\s*=\s*'([\d.]+)'", f.read()).group(1)
 
 with open('README.md', 'r', encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='metakit',
+    name='metatoolkit',
     version=version,
     description='A powerful Python library for processing metadata of images, videos, and audio files',
     long_description=long_description,
     long_description_content_type='text/markdown',
     author='Hmily',
     author_email='',
-    url='https://github.com/ihmily/metakit',
+    url='https://github.com/ihmily/metatoolkit',
     packages=find_packages(),
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -41,11 +41,11 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'metakit=metakit.cli:main',
+            'metatoolkit=metatoolkit.cli:main',
         ],
     },
     project_urls={
-        'Bug Reports': 'https://github.com/ihmily/metakit/issues',
-        'Source': 'https://github.com/ihmily/metakit',
+        'Bug Reports': 'https://github.com/ihmily/metatoolkit/issues',
+        'Source': 'https://github.com/ihmily/metatoolkit',
     },
 )

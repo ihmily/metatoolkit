@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-metakit image metadata processing module
+metatoolkit image metadata processing module
 """
 
 import os
@@ -40,19 +40,19 @@ class ImageMetadataManager(BaseMetadataManager):
     # JPEG Exif UserComment tag ID
     EXIF_USER_COMMENT = 0x9286
 
-    XMP_NAMESPACE = 'Xmp.metakit.'
-    XMP_NAMESPACE_URI = 'http://github.com/ihmily/metakit/'
+    XMP_NAMESPACE = 'Xmp.metatoolkit.'
+    XMP_NAMESPACE_URI = 'http://github.com/ihmily/metatoolkit/'
 
     def __init__(self, custom_metadata: Optional[Dict[str, Any]] = None):
         super().__init__(custom_metadata)
 
         self.metadata.update({
             "timestamp": datetime.now().isoformat(),
-            "identifier": f"metakit-{int(time.time())}"
+            "identifier": f"metatoolkit-{int(time.time())}"
         })
 
         try:
-            pyexiv2.registerNs(self.XMP_NAMESPACE_URI, 'metakit')
+            pyexiv2.registerNs(self.XMP_NAMESPACE_URI, 'metatoolkit')
         except Exception as e:
             logger.warning(f"Error registering XMP namespace: {e}")
 
@@ -280,7 +280,7 @@ class ImageMetadataManager(BaseMetadataManager):
                 metadata = {}
 
                 for key, value in img.info.items():
-                    if key.startswith("metakit_"):
+                    if key.startswith("metatoolkit_"):
                         metadata[key[8:]] = value
                     else:
                         metadata[key] = value

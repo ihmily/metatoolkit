@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-metakit core functionality module
+metatoolkit core functionality module
 """
 
 import os
@@ -18,7 +18,7 @@ class BaseMetadataManager:
     # Default metadata fields
     DEFAULT_METADATA_FIELDS = {
         "ai_generated": "true",
-        "generator": "metakit",
+        "generator": "metatoolkit",
         "version": None,
     }
 

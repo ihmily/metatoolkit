@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-metakit command line interface
+metatoolkit command line interface
 """
 
 import sys
@@ -14,7 +14,7 @@ from typing import Tuple
 from .image import ImageMetadataManager
 from .video import VideoMetadataManager
 from .audio import AudioMetadataManager
-from .exceptions import MetakitError, UnsupportedFormatError
+from .exceptions import MetaToolkitError, UnsupportedFormatError
 
 logging.basicConfig(
     level=logging.INFO,
@@ -73,7 +73,7 @@ def add_image_metadata_cmd(args) -> int:
     except UnsupportedFormatError as e:
         logger.error(str(e))
         return 1
-    except MetakitError as e:
+    except MetaToolkitError as e:
         logger.error(f"Failed to add metadata: {e}")
         return 1
     except Exception as e:
@@ -107,7 +107,7 @@ def read_image_metadata_cmd(args) -> int:
     except UnsupportedFormatError as e:
         logger.error(str(e))
         return 1
-    except MetakitError as e:
+    except MetaToolkitError as e:
         logger.error(f"Failed to read metadata: {e}")
         return 1
     except Exception as e:
@@ -141,7 +141,7 @@ def get_all_image_metadata_cmd(args) -> int:
     except UnsupportedFormatError as e:
         logger.error(str(e))
         return 1
-    except MetakitError as e:
+    except MetaToolkitError as e:
         logger.error(f"Failed to read metadata: {e}")
         return 1
     except Exception as e:
@@ -180,7 +180,7 @@ def add_video_metadata_cmd(args) -> int:
     except UnsupportedFormatError as e:
         logger.error(str(e))
         return 1
-    except MetakitError as e:
+    except MetaToolkitError as e:
         logger.error(f"Failed to add video metadata: {e}")
         return 1
     except Exception as e:
@@ -211,7 +211,7 @@ def read_video_metadata_cmd(args) -> int:
             print(f"Video metadata not found ({args.key})")
             return 1
 
-    except MetakitError as e:
+    except MetaToolkitError as e:
         logger.error(f"Failed to read video metadata: {e}")
         return 1
     except Exception as e:
@@ -265,7 +265,7 @@ def get_all_video_metadata_cmd(args) -> int:
             print("No metadata found")
             return 1
 
-    except MetakitError as e:
+    except MetaToolkitError as e:
         logger.error(f"Failed to read video metadata: {e}")
         return 1
     except Exception as e:
@@ -304,7 +304,7 @@ def add_audio_metadata_cmd(args) -> int:
     except UnsupportedFormatError as e:
         logger.error(str(e))
         return 1
-    except MetakitError as e:
+    except MetaToolkitError as e:
         logger.error(f"Failed to add audio metadata: {e}")
         return 1
     except Exception as e:
@@ -335,7 +335,7 @@ def read_audio_metadata_cmd(args) -> int:
             print(f"Audio metadata not found ({args.key})")
             return 1
 
-    except MetakitError as e:
+    except MetaToolkitError as e:
         logger.error(f"Failed to read audio metadata: {e}")
         return 1
     except Exception as e:
@@ -389,7 +389,7 @@ def get_all_audio_metadata_cmd(args) -> int:
             print("No metadata found")
             return 1
 
-    except MetakitError as e:
+    except MetaToolkitError as e:
         logger.error(f"Failed to read audio metadata: {e}")
         return 1
     except Exception as e:
@@ -405,32 +405,32 @@ def main() -> int:
         int: Exit code
     """
     parser = argparse.ArgumentParser(
-        description='metakit - Image, video and audio metadata processing tool',
+        description='metatoolkit - Image, video and audio metadata processing tool',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
   # Image metadata
-  metakit image add image.png
-  metakit image add image.png --field model='{\"model\": \"stable-diffusion-v1.5\"}' --field creator=user01
-  metakit image read image_metadata.png --key model
-  metakit image all image.png
+  metatoolkit image add image.png
+  metatoolkit image add image.png --field model='{\"model\": \"stable-diffusion-v1.5\"}' --field creator=user01
+  metatoolkit image read image_metadata.png --key model
+  metatoolkit image all image.png
   
   # Video metadata
-  metakit video add video.mp4
-  metakit video add video.mp4 --field mytag=123456
-  metakit video read video_metadata.mp4 --key mytag
-  metakit video all video.mp4
+  metatoolkit video add video.mp4
+  metatoolkit video add video.mp4 --field mytag=123456
+  metatoolkit video read video_metadata.mp4 --key mytag
+  metatoolkit video all video.mp4
   
   # Audio metadata
-  metakit audio add audio.mp3
-  metakit audio add audio.mp3 --field mytag=123456
-  metakit audio read audio_metadata.mp3 --key mytag
-  metakit audio all audio.mp3
+  metatoolkit audio add audio.mp3
+  metatoolkit audio add audio.mp3 --field mytag=123456
+  metatoolkit audio read audio_metadata.mp3 --key mytag
+  metatoolkit audio all audio.mp3
 """
     )
 
     # Add global arguments
-    parser.add_argument('--version', action='version', version=f'%(prog)s {__import__("metakit").__version__}')
+    parser.add_argument('--version', action='version', version=f'%(prog)s {__import__("metatoolkit").__version__}')
     parser.add_argument('--debug', action='store_true', help='Enable debug mode')
 
     # Add subcommands
