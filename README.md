@@ -1,5 +1,9 @@
 # MetaToolkit
 
+[![PyPI version](https://badge.fury.io/py/metatoolkit.svg)](https://badge.fury.io/py/metatoolkit)
+[![Python version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A powerful Python library for processing metadata of images, videos, and audio files. Supports adding, reading, and managing metadata information for various media files.
 
 ## Features
@@ -29,7 +33,7 @@ pip install -e .
 
 ### Requirements
 
-- Python >= 3.6
+- Python >= 3.10
 - Pillow >= 9.5.0
 - pyexiv2 >= 2.15.4
 
