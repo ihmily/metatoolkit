@@ -1,13 +1,12 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """
 metatoolkit core functionality module
 """
 
-import os
 import logging
-from typing import Dict, Any, Optional
+import os
+from typing import Any, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +21,7 @@ class BaseMetadataManager:
         "version": None,
     }
 
-    def __init__(self, custom_metadata: Optional[Dict[str, Any]] = None):
+    def __init__(self, custom_metadata: Optional[dict[str, Any]] = None):
         """
         Initialize metadata manager
         

@@ -1,22 +1,17 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """
 metatoolkit audio metadata processing module
 """
 
-import os
 import json
 import logging
+import os
 import subprocess
-from typing import Dict, Any, Optional
+from typing import Any, Optional
 
 from .core import BaseMetadataManager
-from .exceptions import (
-    MetadataReadError,
-    MetadataWriteError,
-    UnsupportedFormatError
-)
+from .exceptions import MetadataReadError, MetadataWriteError, UnsupportedFormatError
 
 logger = logging.getLogger(__name__)
 
@@ -119,7 +114,7 @@ class AudioMetadataManager(BaseMetadataManager):
             logger.error(error_msg)
             raise MetadataWriteError(error_msg)
 
-    def read_metadata(self, audio_path: str, metadata_key: Optional[str] = None) -> Optional[Dict[str, Any]]:
+    def read_metadata(self, audio_path: str, metadata_key: Optional[str] = None) -> Optional[dict[str, Any]]:
         """
         Read audio metadata
         
@@ -195,7 +190,7 @@ class AudioMetadataManager(BaseMetadataManager):
             logger.error(error_msg)
             raise MetadataReadError(error_msg)
 
-    def get_all_metadata(self, audio_path: str) -> Dict[str, Any]:
+    def get_all_metadata(self, audio_path: str) -> dict[str, Any]:
         """
         Get all metadata of the audio
         
@@ -255,7 +250,7 @@ class AudioMetadataManager(BaseMetadataManager):
                             except json.JSONDecodeError:
                                 pass
 
-            logger.info(f"Retrieved all audio metadata")
+            logger.info("Retrieved all audio metadata")
             return all_metadata
 
         except subprocess.CalledProcessError as e:
@@ -270,16 +265,16 @@ class AudioMetadataManager(BaseMetadataManager):
 
 
 def add_audio_metadata(audio_path: str, output_path: Optional[str] = None,
-                       custom_metadata: Optional[Dict[str, Any]] = None) -> str:
+                       custom_metadata: Optional[dict[str, Any]] = None) -> str:
     manager = AudioMetadataManager(custom_metadata)
     return manager.add_metadata(audio_path, output_path)
 
 
-def read_audio_metadata(audio_path: str, metadata_key: Optional[str] = None) -> Optional[Dict[str, Any]]:
+def read_audio_metadata(audio_path: str, metadata_key: Optional[str] = None) -> Optional[dict[str, Any]]:
     manager = AudioMetadataManager()
     return manager.read_metadata(audio_path, metadata_key)
 
 
-def get_all_audio_metadata(audio_path: str) -> Dict[str, Any]:
+def get_all_audio_metadata(audio_path: str) -> dict[str, Any]:
     manager = AudioMetadataManager()
     return manager.get_all_metadata(audio_path)

@@ -1,20 +1,18 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """
 metatoolkit command line interface
 """
 
-import sys
-import json
 import argparse
+import json
 import logging
-from typing import Tuple
+import sys
 
-from .image import ImageMetadataManager
-from .video import VideoMetadataManager
 from .audio import AudioMetadataManager
 from .exceptions import MetaToolkitError, UnsupportedFormatError
+from .image import ImageMetadataManager
+from .video import VideoMetadataManager
 
 logging.basicConfig(
     level=logging.INFO,
@@ -23,7 +21,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def parse_field(field_str: str) -> Tuple[str, str]:
+def parse_field(field_str: str) -> tuple[str, str]:
     """
     Parse field string into key-value pair
     

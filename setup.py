@@ -1,14 +1,14 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 import os
 import re
-from setuptools import setup, find_packages
 
-with open(os.path.join('metatoolkit', '__init__.py'), 'r', encoding='utf-8') as f:
+from setuptools import find_packages, setup
+
+with open(os.path.join('metatoolkit', '__init__.py'), encoding='utf-8') as f:
     version = re.search(r"__version__\s*=\s*'([\d.]+)'", f.read()).group(1)
 
-with open('README.md', 'r', encoding='utf-8') as f:
+with open('README.md', encoding='utf-8') as f:
     long_description = f.read()
 
 setup(

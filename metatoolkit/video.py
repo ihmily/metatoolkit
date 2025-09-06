@@ -1,22 +1,17 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """
 metatoolkit video metadata processing module
 """
 
-import os
 import json
 import logging
+import os
 import subprocess
-from typing import Dict, Any, Optional
+from typing import Any, Optional
 
 from .core import BaseMetadataManager
-from .exceptions import (
-    MetadataReadError,
-    MetadataWriteError,
-    UnsupportedFormatError
-)
+from .exceptions import MetadataReadError, MetadataWriteError, UnsupportedFormatError
 
 logger = logging.getLogger(__name__)
 
@@ -120,7 +115,7 @@ class VideoMetadataManager(BaseMetadataManager):
             logger.error(error_msg)
             raise MetadataWriteError(error_msg)
 
-    def read_metadata(self, video_path: str, metadata_key: Optional[str] = None) -> Optional[Dict[str, Any]]:
+    def read_metadata(self, video_path: str, metadata_key: Optional[str] = None) -> Optional[dict[str, Any]]:
         """
         Read video metadata
         
@@ -195,7 +190,7 @@ class VideoMetadataManager(BaseMetadataManager):
             logger.error(error_msg)
             raise MetadataReadError(error_msg)
 
-    def get_all_metadata(self, video_path: str) -> Dict[str, Any]:
+    def get_all_metadata(self, video_path: str) -> dict[str, Any]:
         """
         Get all metadata of the video
         
@@ -255,7 +250,7 @@ class VideoMetadataManager(BaseMetadataManager):
                             except json.JSONDecodeError:
                                 pass
 
-            logger.info(f"Retrieved all video metadata")
+            logger.info("Retrieved all video metadata")
             return all_metadata
 
         except subprocess.CalledProcessError as e:
@@ -270,16 +265,16 @@ class VideoMetadataManager(BaseMetadataManager):
 
 
 def add_video_metadata(video_path: str, output_path: Optional[str] = None,
-                       custom_metadata: Optional[Dict[str, Any]] = None) -> str:
+                       custom_metadata: Optional[dict[str, Any]] = None) -> str:
     manager = VideoMetadataManager(custom_metadata)
     return manager.add_metadata(video_path, output_path)
 
 
-def read_video_metadata(video_path: str, metadata_key: Optional[str] = None) -> Optional[Dict[str, Any]]:
+def read_video_metadata(video_path: str, metadata_key: Optional[str] = None) -> Optional[dict[str, Any]]:
     manager = VideoMetadataManager()
     return manager.read_metadata(video_path, metadata_key)
 
 
-def get_all_video_metadata(video_path: str) -> Dict[str, Any]:
+def get_all_video_metadata(video_path: str) -> dict[str, Any]:
     manager = VideoMetadataManager()
     return manager.get_all_metadata(video_path)

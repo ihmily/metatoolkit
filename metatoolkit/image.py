@@ -1,26 +1,25 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """
 metatoolkit image metadata processing module
 """
 
-import os
 import json
-import time
 import logging
+import os
+import time
 from datetime import datetime
-from typing import Dict, Optional, Any
+from typing import Any, Optional
 
-from PIL import Image, ExifTags
-from PIL.PngImagePlugin import PngInfo
 import pyexiv2
+from PIL import ExifTags, Image
+from PIL.PngImagePlugin import PngInfo
 
 from .core import BaseMetadataManager
 from .exceptions import (
-    UnsupportedFormatError,
     MetadataReadError,
     MetadataWriteError,
+    UnsupportedFormatError,
 )
 
 logger = logging.getLogger(__name__)
@@ -43,7 +42,7 @@ class ImageMetadataManager(BaseMetadataManager):
     XMP_NAMESPACE = 'Xmp.metatoolkit.'
     XMP_NAMESPACE_URI = 'http://github.com/ihmily/metatoolkit/'
 
-    def __init__(self, custom_metadata: Optional[Dict[str, Any]] = None):
+    def __init__(self, custom_metadata: Optional[dict[str, Any]] = None):
         super().__init__(custom_metadata)
 
         self.metadata.update({
@@ -87,7 +86,7 @@ class ImageMetadataManager(BaseMetadataManager):
                 elif img.format == 'PNG':
                     return self._add_metadata_to_png(image_path, output_path)
 
-        except (IOError, OSError) as e:
+        except OSError as e:
             logger.error(f"Error processing image: {e}")
             raise MetadataWriteError(f"Error processing image: {e}")
 
@@ -168,7 +167,7 @@ class ImageMetadataManager(BaseMetadataManager):
             logger.error(f"Error adding metadata to PNG: {e}")
             raise MetadataWriteError(f"Error adding metadata to PNG: {e}")
 
-    def read_metadata(self, image_path: str, metadata_key: Optional[str] = None) -> Optional[Dict[str, Any]]:
+    def read_metadata(self, image_path: str, metadata_key: Optional[str] = None) -> Optional[dict[str, Any]]:
         """
         Read image metadata identifier
 
@@ -177,7 +176,8 @@ class ImageMetadataManager(BaseMetadataManager):
             metadata_key (str, optional): Specific metadata field name to read, returns all metadata if None
 
         Returns:
-            dict: Metadata dictionary, returns None if not found. If metadata_key is specified, returns the value of that field
+            dict: Metadata dictionary, returns None if not found. If metadata_key is specified,
+            returns the value of that field
 
         Raises:
             UnsupportedFormatError: If image format is not supported
@@ -205,11 +205,11 @@ class ImageMetadataManager(BaseMetadataManager):
                 else:
                     return metadata
 
-        except (IOError, OSError) as e:
+        except OSError as e:
             logger.error(f"Error reading image: {e}")
             raise MetadataReadError(f"Error reading image: {e}")
 
-    def _read_jpeg_metadata(self, img: Image.Image, metadata_key: Optional[str] = None) -> Optional[Dict[str, Any]]:
+    def _read_jpeg_metadata(self, img: Image.Image, metadata_key: Optional[str] = None) -> Optional[dict[str, Any]]:
         """
         Read JPEG image metadata identifier
 
@@ -264,7 +264,7 @@ class ImageMetadataManager(BaseMetadataManager):
             return None
 
     @staticmethod
-    def _read_png_metadata(img: Image.Image, metadata_key: Optional[str] = None) -> Optional[Dict[str, Any]]:
+    def _read_png_metadata(img: Image.Image, metadata_key: Optional[str] = None) -> Optional[dict[str, Any]]:
         """
         Read PNG image metadata identifier
 
@@ -302,7 +302,7 @@ class ImageMetadataManager(BaseMetadataManager):
             logger.error(f"Error reading PNG metadata: {e}")
             return None
 
-    def get_all_metadata(self, image_path: str) -> Dict[str, Any]:
+    def get_all_metadata(self, image_path: str) -> dict[str, Any]:
         """
         Get all metadata of the image
 
@@ -329,12 +329,12 @@ class ImageMetadataManager(BaseMetadataManager):
                 elif img.format == 'PNG':
                     return self._get_all_png_metadata(img)
 
-        except (IOError, OSError) as e:
+        except OSError as e:
             logger.error(f"Error reading image: {e}")
             raise MetadataReadError(f"Error reading image: {e}")
 
     @staticmethod
-    def _get_all_jpeg_metadata(img: Image.Image) -> Dict[str, Any]:
+    def _get_all_jpeg_metadata(img: Image.Image) -> dict[str, Any]:
         """
         Get all metadata of JPEG image
 
@@ -370,7 +370,7 @@ class ImageMetadataManager(BaseMetadataManager):
         return result
 
     @staticmethod
-    def _get_all_png_metadata(img: Image.Image) -> Dict[str, Any]:
+    def _get_all_png_metadata(img: Image.Image) -> dict[str, Any]:
         """
         Get all metadata of PNG image
 
@@ -398,17 +398,17 @@ class ImageMetadataManager(BaseMetadataManager):
         return result
 
 
-def add_image_metadata(image_path: str, custom_metadata: Optional[Dict[str, Any]] = None,
+def add_image_metadata(image_path: str, custom_metadata: Optional[dict[str, Any]] = None,
                        output_path: Optional[str] = None) -> str:
     manager = ImageMetadataManager(custom_metadata)
     return manager.add_metadata(image_path, output_path)
 
 
-def read_image_metadata(image_path: str, metadata_key: Optional[str] = None) -> Optional[Dict[str, Any]]:
+def read_image_metadata(image_path: str, metadata_key: Optional[str] = None) -> Optional[dict[str, Any]]:
     manager = ImageMetadataManager()
     return manager.read_metadata(image_path, metadata_key)
 
 
-def get_all_image_metadata(image_path: str) -> Dict[str, Any]:
+def get_all_image_metadata(image_path: str) -> dict[str, Any]:
     manager = ImageMetadataManager()
     return manager.get_all_metadata(image_path)
