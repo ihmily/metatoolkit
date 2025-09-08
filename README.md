@@ -37,6 +37,8 @@ pip install -e .
 - Pillow >= 9.5.0
 - pyexiv2 >= 2.15.4
 
+> **Note**: Video and audio metadata writing functionality requires FFmpeg environment. Please ensure FFmpeg is properly installed on your system and accessible from the command line.
+
 ## Quick Start
 
 ### Image Metadata Processing
@@ -54,7 +56,7 @@ custom_metadata = {
 }
 
 # Add metadata
-output_path = metatoolkit.add_image_metadata("input.jpg", custom_metadata=custom_metadata)
+output_path = metatoolkit.add_image_metadata("input.png", custom_metadata=custom_metadata)
 
 # Read metadata
 metadata = metatoolkit.read_image_metadata(output_path)
@@ -112,22 +114,22 @@ MetaToolkit provides a convenient command-line tool that can be used directly in
 metatoolkit --help
 
 # Add image metadata
-metatoolkit add-image --input image.jpg --output image_with_metadata.jpg --metadata '{"title":"My Image","author":"User"}'
+metatoolkit image add image.png --field MyTag='{\"title\":\"My Image\",\"author\":\"User\"}'
 
 # Read image metadata
-metatoolkit read-image --input image.jpg
+metatoolkit image read image.png
 
 # Add video metadata
-metatoolkit add-video --input video.mp4 --metadata '{"title":"My Video","description":"Video description"}'
+metatoolkit video add video.mp4 --field MyTag1=MyTest01 --field MyTag2=MyTest02
 
 # Read video metadata
-metatoolkit read-video --input video.mp4
+metatoolkit video read video.mp4
 
 # Add audio metadata
-metatoolkit add-audio --input audio.mp3 --metadata '{"title":"My Music","artist":"Artist"}'
+metatoolkit audio add audio.mp3 --field MyTag1=MyTest01 --field MyTag2=MyTest02 --field MyTag3=MyTest03
 
 # Read audio metadata
-metatoolkit read-audio --input audio.mp3
+metatoolkit audio read audio.mp3
 ```
 
 ## API Reference
@@ -183,13 +185,13 @@ metatoolkit read-audio --input audio.mp3
 
 ```bash
 # View all metadata in an image
-exiftool image.jpg
-
-# View specific metadata fields
-exiftool -EXIF:Make -EXIF:Model image.jpg
+exiftool image.png
 
 # View metadata in a video
 exiftool video.mp4
+
+# View metadata in a audio
+exiftool audio.mp3
 ```
 
 #### FFprobe
@@ -202,21 +204,6 @@ ffprobe -v quiet -print_format json -show_format -show_streams video.mp4
 
 # View audio metadata
 ffprobe -v quiet -print_format json -show_format audio.mp3
-
-# View basic information
-ffprobe -v quiet -show_entries format=duration,size,bit_rate input.mp4
-```
-
-#### MediaInfo
-
-MediaInfo is another excellent tool for viewing detailed metadata information.
-
-```bash
-# View all metadata
-mediainfo file.mp4
-
-# View in XML format
-mediainfo --Output=XML file.mp4
 ```
 
 ### Installation
@@ -239,15 +226,6 @@ brew install ffmpeg
 
 # Install FFmpeg/FFprobe (Ubuntu/Debian)
 sudo apt-get install ffmpeg
-
-# Install MediaInfo (Windows)
-# Download from https://mediaarea.net/en/MediaInfo
-
-# Install MediaInfo (macOS)
-brew install mediainfo
-
-# Install MediaInfo (Ubuntu/Debian)
-sudo apt-get install mediainfo
 ```
 
 ## Examples

@@ -4,7 +4,7 @@
 metatoolkit - Image, video and audio metadata processing tool
 """
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 __author__ = 'Hmily'
 
 from .audio import AudioMetadataManager, add_audio_metadata, get_all_audio_metadata, read_audio_metadata
